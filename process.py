@@ -50,7 +50,7 @@ async def start():
     print()
 
     try:
-        choice = input("Enter option (1-4): ").strip()
+        choice = input("Enter option (1-3): ").strip()
     except Exception as e:
         logger.error(f"Input error: {e}")
         return
