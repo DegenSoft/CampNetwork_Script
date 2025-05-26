@@ -4,6 +4,7 @@ from loguru import logger
 
 
 import src.utils
+import getpass
 
 from src.utils.proxy_parser import Proxy
 import src.model
@@ -14,7 +15,7 @@ from src.utils.config_browser import run
 
 async def start():
     async def launch_wrapper(
-        index, proxy, private_key, discord_token, twitter_token, email
+        index, proxy, private_key, discord_token, twitter_token, email, password
     ):
         async with semaphore:
             await account_flow(
@@ -26,18 +27,13 @@ async def start():
                 email,
                 config,
                 progress_tracker,
+                password
             )
 
     # Display important notice with colors and emojis
     print("\n" + "=" * 80)
     print("🚨 \033[93mIMPORTANT NOTICE\033[0m 🚨")
     print("=" * 80)
-    print(
-        "📚 \033[96mIt is STRONGLY RECOMMENDED to read the instructions before using the bot!\033[0m"
-    )
-    print(
-        "🔗 \033[96mInstructions: https://star-labs.gitbook.io/star-labs/software/campnetwork/eng#usage-1\033[0m"
-    )
     print(
         "⚠️ \033[91mPlease read the documentation to avoid errors and ensure proper usage.\033[0m"
     )
@@ -72,7 +68,7 @@ async def start():
         return
 
     config = src.utils.get_config()
-
+    password = getpass.getpass("Enter wallets password: ")
     # Load proxies using proxy parser
     try:
         proxy_objects = Proxy.from_file("data/proxies.txt")
@@ -207,6 +203,7 @@ async def start():
                     discord_tokens_to_process[idx],
                     twitter_tokens_to_process[idx],
                     emails_to_process[idx],
+                    password
                 )
             )
         )
@@ -229,6 +226,7 @@ async def account_flow(
     email: str,
     config: src.utils.config.Config,
     progress_tracker: ProgressTracker,
+    password: str
 ):
     try:
         instance = src.model.Start(
@@ -239,6 +237,7 @@ async def account_flow(
             discord_token,
             twitter_token,
             email,
+            password
         )
 
         result = await wrapper(instance.initialize, config)

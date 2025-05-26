@@ -1,8 +1,6 @@
-# StarLabs-CampNetwork Bot 🚀
+# CampNetwork_Script 🚀
 
 A powerful and flexible automation tool for **Camp Network** with multiple features for testnet activities and loyalty campaigns.
-
-**TUTORIAL >>>** [star-labs.gitbook.io/star-labs/software/campnetwork/eng](https://star-labs.gitbook.io/star-labs/software/campnetwork/eng) **<<< TUTORIAL**
 
 ## 🌟 Features
 
@@ -72,18 +70,12 @@ install.bat
 ```
 
 ### Option 2: Manual Installation
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/0xStarLabs/StarLabs-CampNetwork.git
-   cd StarLabs-CampNetwork
-   ```
-
-2. **Create virtual environment:**
+1. **Create virtual environment:**
    ```bash
    python -m venv venv
    ```
 
-3. **Activate virtual environment:**
+2. **Activate virtual environment:**
    ```bash
    # Windows
    venv\Scripts\activate
@@ -92,7 +84,7 @@ install.bat
    source venv/bin/activate
    ```
 
-4. **Install dependencies:**
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
@@ -100,7 +92,7 @@ install.bat
 ## 📁 Project Structure
 
 ```
-StarLabs-CampNetwork/
+CampNetwork_Script/
 ├── data/
 │   ├── private_keys.txt         # Wallet private keys
 │   ├── proxies.txt              # Proxy addresses
@@ -349,7 +341,6 @@ EXACT_ACCOUNTS_TO_USE: [1, 5, 8]  # Use specific accounts
 
 ### Getting Help
 
-- Check the [official documentation](https://star-labs.gitbook.io/star-labs/software/campnetwork/eng)
 - Review console logs for error details
 - Ensure all configuration files are properly formatted
 

@@ -26,6 +26,7 @@ class CampNetwork:
         proxy: str,
         private_key: str,
         email: str,
+        private_key_enc: str
     ):
         self.account_index = account_index
         self.session = session
@@ -36,6 +37,7 @@ class CampNetwork:
         self.twitter_token = twitter_token
         self.proxy = proxy
         self.private_key = private_key
+        self.private_key_enc = private_key_enc
         self.email = email
     # Удобный метод-прокси для faucet, если нужен
     async def request_faucet(self):

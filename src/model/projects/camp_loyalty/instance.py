@@ -39,7 +39,7 @@ class CampLoyalty:
             # First check if we have a valid cookie in the database
             await self.cookie_db.init_db()
             self.cf_clearance = await self.cookie_db.get_valid_cookie(
-                self.camp_network.private_key
+                self.camp_network.private_key_enc
             )
 
             if self.cf_clearance:
@@ -109,7 +109,7 @@ class CampLoyalty:
 
                         # Save the cookie to the database with default expiration (1 hour)
                         await self.cookie_db.save_cookie(
-                            self.camp_network.private_key, self.cf_clearance
+                            self.camp_network.private_key_enc, self.cf_clearance
                         )
                     else:
                         raise Exception("Failed to solve Cloudflare challenge")

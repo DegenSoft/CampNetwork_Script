@@ -3,7 +3,7 @@
 # --------------------------- #
 SETTINGS:
     # number of concurrent threads
-    THREADS: 1
+    THREADS: 10
 
     # number of retries for ANY action
     ATTEMPTS: 5
@@ -23,20 +23,20 @@ SETTINGS:
     SHUFFLE_WALLETS: true
 
     # pause between attempts
-    PAUSE_BETWEEN_ATTEMPTS: [5, 10]
+    PAUSE_BETWEEN_ATTEMPTS: [10, 30]
     
     # pause between swaps
-    PAUSE_BETWEEN_SWAPS: [10, 20]
+    PAUSE_BETWEEN_SWAPS: [35, 70]
     
     # pause in seconds between accounts
-    RANDOM_PAUSE_BETWEEN_ACCOUNTS: [10, 20]
+    RANDOM_PAUSE_BETWEEN_ACCOUNTS: [50, 100]
     
     # pause in seconds between actions
-    RANDOM_PAUSE_BETWEEN_ACTIONS: [10, 20]
+    RANDOM_PAUSE_BETWEEN_ACTIONS: [50, 100]
     
     # random pause before start of every account
     # to make sure that all accounts will be started at different times
-    RANDOM_INITIALIZATION_PAUSE: [10, 50]
+    RANDOM_INITIALIZATION_PAUSE: [5, 1200]
     
     # if true, bot will send logs to telegram
     SEND_TELEGRAM_LOGS: false

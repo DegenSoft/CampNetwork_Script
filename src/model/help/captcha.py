@@ -591,7 +591,7 @@ class Solvium:
         }
 
         url = (
-            f"{self.base_url}/task/noname?url={pageurl}&sitekey={sitekey}&ref=starlabs"
+            f"{self.base_url}/task/noname?url={pageurl}&sitekey={sitekey}"
         )
 
         # if self.proxy:

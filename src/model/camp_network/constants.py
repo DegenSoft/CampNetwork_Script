@@ -20,6 +20,7 @@ class CampNetworkProtocol(Protocol):
     proxy: str
     private_key: str
     email: str
+    private_key_enc: str
 
     # Инициализируем сервисы        
     camp_login_token: str = ""

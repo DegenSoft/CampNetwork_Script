@@ -4,6 +4,8 @@ import primp
 import random
 import asyncio
 
+
+from src.degensoft.decryption import decrypt_private_key
 from src.model.offchain.cex.instance import CexWithdraw
 from src.model.projects.crustyswap.instance import CrustySwap
 from src.model.projects.camp_loyalty.instance import CampLoyalty
@@ -28,15 +30,16 @@ class Start:
         discord_token: str,
         twitter_token: str,
         email: str,
+        password: str,
     ):
         self.account_index = account_index
         self.proxy = proxy
-        self.private_key = private_key
         self.config = config
         self.discord_token = discord_token
         self.twitter_token = twitter_token
         self.email = email
-
+        self.private_key_enc = private_key
+        self.private_key = decrypt_private_key(private_key,password) if password else private_key
         self.session: primp.AsyncClient | None = None
         self.camp_web3: Web3Custom | None = None
         self.camp_instance: CampNetwork | None = None
@@ -70,6 +73,7 @@ class Start:
                 self.proxy,
                 self.private_key,
                 self.email,
+                self.private_key_enc
             )
 
             return True
@@ -81,7 +85,7 @@ class Start:
         try:
             db = Database()
             try:
-                tasks = await db.get_wallet_pending_tasks(self.private_key)
+                tasks = await db.get_wallet_pending_tasks(self.private_key_enc)
             except Exception as e:
                 if "no such table: wallets" in str(e):
                     logger.error(
@@ -91,7 +95,7 @@ class Start:
                         error_message = (
                             f"⚠️ Database Error Alert\n\n"
                             f"👤 Account #{self.account_index}\n"
-                            f"💳 Wallet: <code>{self.private_key[:6]}...{self.private_key[-4:]}</code>\n"
+                            f"💳 Wallet: <code>{self.private_key_enc[:6]}...{self.private_key_enc[-4:]}</code>\n"
                             f"❌ Error: Database not created or wallets table not found"
                         )
                         await send_telegram_message(self.config, error_message)
@@ -144,7 +148,7 @@ class Start:
                 if task_name == "skip":
                     logger.info(f"⏭️ [{self.account_index}] Skipping task: {task_name}")
                     await db.update_task_status(
-                        self.private_key, task_name, "completed"
+                        self.private_key_enc, task_name, "completed"
                     )
                     completed_tasks.append(task_name)
                     await self.sleep(task_name)
@@ -156,7 +160,7 @@ class Start:
 
                 if success:
                     await db.update_task_status(
-                        self.private_key, task_name, "completed"
+                        self.private_key_enc, task_name, "completed"
                     )
                     completed_tasks.append(task_name)
                     await self.sleep(task_name)
@@ -176,7 +180,7 @@ class Start:
             try:
                 wallet_stats = WalletStats(self.config, self.camp_web3)
                 await wallet_stats.get_wallet_stats(
-                    self.private_key, self.account_index
+                    self.private_key_enc, self.account_index
                 )
             except Exception as e:
                 pass
@@ -184,9 +188,9 @@ class Start:
             # Send Telegram message at the end
             if self.config.SETTINGS.SEND_TELEGRAM_LOGS:
                 message = (
-                    f"🤖 StarLabs CampNetwork Bot Report\n\n"
+                    f"🤖 CampNetwork Bot Report\n\n"
                     f"👤 Account: #{self.account_index}\n"
-                    f"💳 Wallet: <code>{self.private_key[:6]}...{self.private_key[-4:]}</code>\n\n"
+                    f"💳 Wallet: <code>{self.private_key_enc[:6]}...{self.private_key_enc[-4:]}</code>\n\n"
                 )
 
                 if completed_tasks:
@@ -224,7 +228,7 @@ class Start:
                 error_message = (
                     f"⚠️ Critical Error Alert\n\n"
                     f"👤 Account #{self.account_index}\n"
-                    f"💳 Wallet: <code>{self.private_key[:6]}...{self.private_key[-4:]}</code>\n"
+                    f"💳 Wallet: <code>{self.private_key_enc[:6]}...{self.private_key_enc[-4:]}</code>\n"
                     f"❌ Error: {str(e)}"
                 )
                 await send_telegram_message(self.config, error_message)
